@@ -157,7 +157,18 @@ public class MavenChatApp {
     Credit: Website - Oracle - Class ArrayList<E>
     Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ArrayList.html
 
+    Credit: Website - GitHub - Automated Testing with Maven and GitHub Actions
+    Source: https://github.com/PROG5121Guru/Maven-UnitTesting
+
     Credit:
     Source:
 
+    Credit:
+    Source:
+
+    Credit:
+    Source:
+
+    Credit:
+    Source:
 */
