@@ -160,8 +160,11 @@ public class MavenChatApp {
     Credit: Website - GitHub - Automated Testing with Maven and GitHub Actions
     Source: https://github.com/PROG5121Guru/Maven-UnitTesting
 
-    Credit:
-    Source:
+    Credit: YouTube - JUnit Tutorial - #1 - Introduction to JUnit | What is the JUnit? | JUnit Tutorial New Series 
+    Source: https://www.youtube.com/watch?v=YXV51LVmfok&list=PLGRDMO4rOGcNhqxHpVjQP80tLRTxis__x
+
+    Credit: YouTube - JUnit Tutorial - #4 - Writing Your First JUnit Test | Unit Test Calculator
+    Source: https://www.youtube.com/watch?v=ZoOXPuxvsfo&list=PLGRDMO4rOGcNhqxHpVjQP80tLRTxis__x&index=4
 
     Credit:
     Source:
@@ -169,6 +172,4 @@ public class MavenChatApp {
     Credit:
     Source:
 
-    Credit:
-    Source:
 */
