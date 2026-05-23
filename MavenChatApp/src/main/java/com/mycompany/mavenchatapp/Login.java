@@ -61,8 +61,8 @@ public class Login {
         if (cellphone == null) {
             return false;
         }
-        
-        boolean cellphoneFormat = cellphone.matches("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$"); // International format
+        // Country code required 
+        boolean cellphoneFormat = cellphone.matches("^\\+\\d{1,3}( )?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$"); // International format
         if (cellphoneFormat == true) {
             System.out.println("Cell phone number successfully added.");
             return true;
