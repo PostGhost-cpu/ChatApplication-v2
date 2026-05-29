@@ -51,7 +51,8 @@ public class MavenChatApp {
                 
                 System.out.println("Option 1) Send Messages");
                 System.out.println("Option 2) Show recently sent messages");
-                System.out.println("Option 3) Quit");
+                System.out.println("Option 3) Stored Messages");
+                System.out.println("Option 4) Quit");
                 
                 int option = input.nextInt();
                 input.nextLine(); // Used to read an entire line of text 
@@ -90,14 +91,14 @@ public class MavenChatApp {
                     System.out.println(message);
                     System.out.println("Total messages sent: " + message.returnTotalMessages());
                 }
-
             } else if (option == 2) {
                 System.out.println("Recently sent messages:");
                 System.out.println(new Message().printMessages());
-
             } else if (option == 3) {
+                System.out.println("Stored messages:"); // Display message elements
+                
+            } else if (option == 4) {
                 System.exit(0);
-
             } else {
                 System.out.println("Wrong input");
             }
@@ -165,6 +166,21 @@ public class MavenChatApp {
 
     Credit: YouTube - JUnit Tutorial - #4 - Writing Your First JUnit Test | Unit Test Calculator
     Source: https://www.youtube.com/watch?v=ZoOXPuxvsfo&list=PLGRDMO4rOGcNhqxHpVjQP80tLRTxis__x&index=4
+
+    Credit: Website - Longest Word
+    Source: https://www.geeksforgeeks.org/dsa/print-all-strings-of-maximum-length-from-an-array-of-strings/
+
+    Credit:
+    Source:
+
+    Credit:
+    Source:
+
+    Credit:
+    Source:
+
+    Credit:
+    Source:
 
     Credit:
     Source:

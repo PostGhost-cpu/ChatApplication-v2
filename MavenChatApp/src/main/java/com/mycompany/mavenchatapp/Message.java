@@ -20,8 +20,12 @@ public class Message {
     private String messageHash;
     private int amountOfmessages;
     // Array
-    private static final List<Message> sentMessagesList = new ArrayList<>();
-    private static final List<Message> storedMessagesList = new ArrayList<>();
+    private static final ArrayList<Message> sentMessagesList = new ArrayList<>();
+    private static final ArrayList<Message> disregardedMessagesList = new ArrayList<>();
+    private static final ArrayList<Message> storedMessagesList = new ArrayList<>();
+    private static final ArrayList<Message> messageHashList = new ArrayList<>();
+    private static final ArrayList<Message> messageIdList = new ArrayList<>();
+    
     private static int totalMessages = 0;
         
     public Message() {
@@ -181,6 +185,35 @@ public class Message {
         } catch (IOException e) { // Returns an empty list if the file cannot be read
             return new ArrayList<>();
         }
+    }
+    public String storedMessages() {
+        if (storedMessagesList.isEmpty()) {
+            return "No messages stored.";
+        }
+        // Display the sender and recipient of all stored messages
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<Message>>() { }.getType();
+        // Opens the JSON file
+        try (BufferedReader reader = new BufferedReader(new FileReader("StoreMessage.json"))) {
+            List<Message> messages = gson.fromJson(reader, listType);
+            return messages == null ? new ArrayList<>() : messages; // Returns an empty list if the file is empty
+        } catch (IOException e) { // Returns an empty list if the file cannot be read
+            return new ArrayList<>();
+        }
+        // Display the longest stored message
+        String[] array = storedMessagesList;
+        String longestStr = array[0];
+        
+        for (int a = 1; a < arr.length; a ++) {
+            if (array[a].length() > longestStr.length()) {
+                longestStr = array[a]
+            }
+            return longestStr;
+        }
+        // Search for a message Id and display the corresponding recipient and message
+        // Search for all the messages stored for a particular recipient
+        // Delete a messages using the message hash
+        // Display a report that lists the full details of all the stored messages
     }
     @Override // Redefine a method already existing
     public String toString() { // Formats the message details for display on screen
