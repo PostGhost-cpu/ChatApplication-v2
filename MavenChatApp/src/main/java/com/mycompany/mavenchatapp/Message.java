@@ -187,34 +187,28 @@ public class Message {
         }
     }
     public String storedMessages() {
-        if (storedMessagesList.isEmpty()) {
+    // Loads all stored messages from the JSON file into a list
+    List<Message> messages = loadStoredMessages();
+        // Checks whether the list is empty before trying to display
+        if (messages.isEmpty()) {
             return "No messages stored.";
         }
-        // Display the sender and recipient of all stored messages
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<Message>>() { }.getType();
-        // Opens the JSON file
-        try (BufferedReader reader = new BufferedReader(new FileReader("StoreMessage.json"))) {
-            List<Message> messages = gson.fromJson(reader, listType);
-            return messages == null ? new ArrayList<>() : messages; // Returns an empty list if the file is empty
-        } catch (IOException e) { // Returns an empty list if the file cannot be read
-            return new ArrayList<>();
+        // Builds a formatted text output for every stored message
+        StringBuilder builder = new StringBuilder();
+        for (Message message : messages) { // Loops through each message in the list and adds it to the output
+            builder.append(message)
+               .append(System.lineSeparator())
+               .append(System.lineSeparator());
         }
-        // Display the longest stored message
-        String[] array = storedMessagesList;
-        String longestStr = array[0];
+        // Returns the full list of stored messages as one string
+        return builder.toString().trim();
         
-        for (int a = 1; a < arr.length; a ++) {
-            if (array[a].length() > longestStr.length()) {
-                longestStr = array[a]
-            }
-            return longestStr;
-        }
         // Search for a message Id and display the corresponding recipient and message
         // Search for all the messages stored for a particular recipient
         // Delete a messages using the message hash
         // Display a report that lists the full details of all the stored messages
     }
+    
     @Override // Redefine a method already existing
     public String toString() { // Formats the message details for display on screen
         return "Message ID: " + messageId + System.lineSeparator() + "Message Hash: " + messageHash + System.lineSeparator() + "Recipient: " + recipientCell + System.lineSeparator() + "Message: " + messages;
