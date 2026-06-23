@@ -87,9 +87,9 @@ public class MessageTest {
     public void testMessageSentWithDiscardOption() {
         message.setMessages("Hi Keegan, did you receive the payment?");
         message.setRecipient("+27718693002");
-        
+
         String result = message.sentMessages("Disregard");
-        assertTrue(result.contains("delete"));
+        assertEquals("Message disregarded", result);
     }
 
     @Test
@@ -131,20 +131,26 @@ public class MessageTest {
     @Test 
     public void testMessageIDLength() { 
 	Message message = new Message( "It is dinner time !", "+27838884567", 4); 
-	message.checkMessageID(); assertEquals( 10, message.getMessageId().length()); 
+	message.checkMessageID(); 
+        assertEquals( 10, message.getMessageId().length()); 
     }
 
     // Stored Message
     @Test 
     public void testSearchMessageID() { 
 	Message message = new Message( "Where are you? You are late! I have asked you to be on time.", "+27838884567", 2); 
-	message.sentMessages("STORE"); assertNotNull(message.getMessageId()); 
+	message.sentMessages("STORE"); 
+        assertNotNull(message.getMessageId()); 
     }
 
     @Test 
     public void testMessageHashGenerated() { 
 	Message message = new Message( "Did you get the cake?", "+27834557896", 1); 
-	message.checkMessageID(); String hash = message.createMessageHash(); assertNotNull(hash); 	assertFalse(hash.isEmpty()); 
+	message.checkMessageID(); 
+        
+        String hash = message.createMessageHash(); 
+        assertNotNull(hash); 	
+        assertFalse(hash.isEmpty()); 
     }
 
     @Test 
