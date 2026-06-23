@@ -111,21 +111,25 @@ public class Message {
         } else { 
             hashWord = "Only: " + words[0];
         }
-        String messageHash = (oneChar + twoChar + ":" + amountOfmessages + hashWord).toUpperCase();
+        messageHash = ("" + oneChar + twoChar + ":" + amountOfmessages + ":" + hashWord).toUpperCase();
+        
         return messageHash;
     }
     public String sentMessages(String option) {
         if (messages == null || messages.trim().isEmpty() || messages.length() > 250) {
             return "Please enter a message of less than 250 characters.";
         }
+        
         String recipientCheck = checkRecipientCell();
-        if (!"Cell phone number successfully added.".equals(recipientCheck)) {
+        
+        if (!recipientCheck.equals("Cell phone number successfully added.")) {
             return recipientCheck;
         }
         if (!checkMessageID()) {
             return "Message ID is invalid.";
         }
-        createMessageHash();
+        
+        createMessageHash(); // Generate and save the hash before storing.
 
         if (option == null) {
             return "Invalid option.";
@@ -133,17 +137,31 @@ public class Message {
         // Converts the option to uppercase so input is easier to compare
         String choice = option.trim().toUpperCase();
 
-        if ("SEND".equals(choice)) { // Sends and adds it to the sent list
+        if (choice.equals("SEND")) { // Sends and adds it to the sent list
+            // Populate all required arrays
             sentMessagesList.add(this);
+            messageHashList.add(this);
+            messageIdList.add(this);
+
             totalMessages++;
+            
             return "Message successfully sent";
         }
-        if ("STORE".equals(choice)) { // Stores for later and writes it to JSON
+        if (choice.equals("STORE")) { // Stores for later and writes it to JSON
+            // Populate all required arrays
             storedMessagesList.add(this);
+            messageHashList.add(this);
+            messageIdList.add(this);
+
             return storeMessages();
         }
-        if ("DISREGARD".equals(choice) || "O".equals(choice)) { // Disregards the message 
-            return "Press O to delete the message";
+        if (choice.equals("DISREGARD")) { // Disregards the message 
+            // Store disregarded messages
+            disregardedMessagesList.add(this);
+            messageHashList.add(this);
+            messageIdList.add(this);
+
+            return "Message disregarded";
         }
         // Handles invalid options
         return "Invalid option.";
@@ -152,11 +170,14 @@ public class Message {
         if (sentMessagesList.isEmpty()) {
             return "No messages sent.";
         }
-
+        // Creates a StringBuilder to efficiently combine multiple messages
         StringBuilder builder = new StringBuilder();
-        for (Message message : sentMessagesList) {
+        
+        for (Message message : sentMessagesList) { // Loops through every message stored
+            // Adds the message details followed by blank lines for readability
             builder.append(message).append(System.lineSeparator()).append(System.lineSeparator());
         }
+        // Converts into a String and returns it
         return builder.toString().trim();
     }
     public int returnTotalMessages() {
@@ -186,6 +207,19 @@ public class Message {
             return new ArrayList<>();
         }
     }
+    public String displayStoredRecipients() {
+        // Displays all recipients for stored messages
+        List<Message> messages = loadStoredMessages();
+        if (messages.isEmpty()) {
+            return "No stored messages.";
+        }
+        StringBuilder builder = new StringBuilder();
+
+        for (Message message : messages) {
+        builder.append("Recipient: ").append(message.getRecipient()).append(System.lineSeparator());
+    }
+    return builder.toString();
+    }
     public String storedMessages() {
     // Loads all stored messages from the JSON file into a list
     List<Message> messages = loadStoredMessages();
@@ -196,22 +230,97 @@ public class Message {
         // Builds a formatted text output for every stored message
         StringBuilder builder = new StringBuilder();
         for (Message message : messages) { // Loops through each message in the list and adds it to the output
-            builder.append(message)
-               .append(System.lineSeparator())
-               .append(System.lineSeparator());
+            builder.append(message.toString()).append(System.lineSeparator()).append(System.lineSeparator());
         }
         // Returns the full list of stored messages as one string
         return builder.toString().trim();
-        
-        // Search for a message Id and display the corresponding recipient and message
-        // Search for all the messages stored for a particular recipient
-        // Delete a messages using the message hash
-        // Display a report that lists the full details of all the stored messages
     }
-    
+    public String deleteMessage(String hash) {
+        // Deletes a stored message using its hash
+        List<Message> messages = loadStoredMessages();
+        // Searches the list and removes any message whose hash matches the hash entered
+        boolean removed = messages.removeIf(message -> hash.equals(message.getMessageHash()));
+        // If no matching message was found return message
+        if (!removed) {
+            return "Message hash not found.";
+        }
+
+        // Creates a Gson object to rewrite the updated message list to Json
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter("StoreMessage.json")) {
+            gson.toJson(messages, writer);
+        } catch (IOException e) { // Handles any file writing errors
+        return "Error deleting message.";
+    }
+    return "Message successfully deleted.";
+    }
+    public String messageReport() {
+        // Displays full details for every stored message
+        List<Message> messages = loadStoredMessages();
+
+        if (messages.isEmpty()) {
+            return "No stored messages.";
+        }
+        StringBuilder builder = new StringBuilder();
+
+        for (Message message : messages) {
+        builder.append(message.toString()).append(System.lineSeparator()).append(System.lineSeparator());
+    }
+    // Returns the completed report as a String
+    return builder.toString();
+    }
+    public String longestStoredMessage() {
+        // Finds and returns the longest stored message
+        List<Message> messages = loadStoredMessages();
+
+        if (messages.isEmpty()) {
+            return "No stored messages.";
+        }
+        // Assumes the first message is the longest initially
+        Message longest = messages.get(0);
+        // Compares every message with the current longest message
+        for (Message message : messages) {
+        
+        if (message.getMessages().length() > longest.getMessages().length()) {
+            longest = message;
+        }
+    }
+    return longest.getMessages();
+    }
+    public String searchMessageID(String id) {
+        // Searches for a message using its Id
+        List<Message> messages = loadStoredMessages();
+
+        for (Message message : messages) {
+        // Checks whether the entered Id matches the message Id
+        if (id.equals(message.getMessageId())) {
+            // Returns the recipient and message content
+            return "Recipient: " + message.getRecipient() + System.lineSeparator() + "Message: " + message.getMessages();
+        }
+    }
+    return "Message ID not found.";
+    }
+    public String searchRecipient(String recipient) {
+        // Searches for all messages belonging to a recipient
+        List<Message> messages = loadStoredMessages();
+        // Creates a StringBuilder to store matching messages
+        StringBuilder builder = new StringBuilder();
+
+        for (Message message : messages) {
+        if (recipient.equals(message.getRecipient())) { // Checks whether the recipient matches input 
+            builder.append(message.getMessages()).append(System.lineSeparator());
+        }
+    }
+    // If nothing was added to the StringBuilder
+    if (builder.length() == 0) {
+        return "No messages found.";
+    }
+    return builder.toString();
+    }
     @Override // Redefine a method already existing
     public String toString() { // Formats the message details for display on screen
         return "Message ID: " + messageId + System.lineSeparator() + "Message Hash: " + messageHash + System.lineSeparator() + "Recipient: " + recipientCell + System.lineSeparator() + "Message: " + messages;
     }
 }
+
 // String json = "id: " + messageId + '\'' + " hash: " + messageHash + " recipient: " + recipientcell + " message: " + messages + '\'';

@@ -86,17 +86,76 @@ public class MavenChatApp {
                 String choice = input.nextLine();
                 String result = message.sentMessages(choice);
                 System.out.println(result);
-
-                if (choice.equalsIgnoreCase("Send") || choice.equalsIgnoreCase("Store")) {
+                // Ignores lower case and upper case differences
+                if (choice.equalsIgnoreCase("Send")) {
                     System.out.println(message);
                     System.out.println("Total messages sent: " + message.returnTotalMessages());
+                } else if (choice.equalsIgnoreCase("Store")) {
+                    System.out.println(message);
                 }
             } else if (option == 2) {
                 System.out.println("Recently sent messages:");
-                System.out.println(new Message().printMessages());
+                // Creates a temporary Message object and calls printMessages()
+                System.out.println(new Message().printMessages()); // Display all messages stored in the sentMessagesList array
             } else if (option == 3) {
-                System.out.println("Stored messages:"); // Display message elements
+
+                Message message = new Message();
+
+                System.out.println("1. Display Recipients");
+                System.out.println("2. Display Longest Message");
+                System.out.println("3. Search Message ID");
+                System.out.println("4. Search Recipient");
+                System.out.println("5. Delete Message");
+                System.out.println("6. Full Report");
+                System.out.println("7. Display Stored Messages");
                 
+                int storedOption = input.nextInt();
+                input.nextLine();
+                // The switch statement selects one of many code blocks to be executed
+                switch (storedOption) {
+                    case 1: 
+                        // Displays all recipients of stored messages
+                        System.out.println(message.displayStoredRecipients());
+                    break;
+                    case 2: 
+                        // Finds and displays the longest stored message
+                        System.out.println(message.longestStoredMessage());
+                    break;
+                    case 3: 
+                        // Prompts the user for a Message Id
+                        System.out.println("Enter Message ID:");
+                        String id = input.nextLine();
+                        
+                        // Displays the recipient and message associated with the Id
+                        System.out.println(message.searchMessageID(id));
+                    break;
+                    case 4: 
+                        // Prompts the user for a recipient number
+                        System.out.println("Enter Recipient:");
+                        String recipient = input.nextLine();
+                        
+                        // Displays all messages stored for that recipient
+                        System.out.println(message.searchRecipient(recipient));
+                    break;
+                    case 5:
+                        // Prompts the user for a message hash
+                        System.out.println("Enter Message Hash:");
+                        String hash = input.nextLine();
+                        
+                        // Deletes the matching stored message
+                        System.out.println(message.deleteMessage(hash));
+                    break;
+                    case 6:
+                        // Displays a complete report of all stored messages
+                        System.out.println(message.messageReport());
+                    break;
+                    case 7:
+                        // Displays every stored message loaded from the Json file
+                        System.out.println(message.storedMessages());
+                    break;
+                default:
+                    System.out.println("Invalid option."); // Executes when the user enters an invalid option
+                }
             } else if (option == 4) {
                 System.exit(0);
             } else {
@@ -170,22 +229,124 @@ public class MavenChatApp {
     Credit: Website - Longest Word
     Source: https://www.geeksforgeeks.org/dsa/print-all-strings-of-maximum-length-from-an-array-of-strings/
 
-    Credit:
-    Source:
+    Credit: Website - W3school - Java Switch
+    Source: https://www.w3schools.com/java/java_switch.asp
 
-    Credit:
-    Source:
+    Credit: Website - Oracle - Class StringBuilder
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/StringBuilder.html
 
-    Credit:
-    Source:
+    Credit: Website - Oracle - Interface List<E>
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html
 
-    Credit:
-    Source:
+    Credit: YouTube - Bro Code - Java File Handling
+    Source: https://www.youtube.com/watch?v=H62Jfv1DJlU
 
-    Credit:
-    Source:
+    Credit: YouTube - Coding with John - Reading and Writing Files in Java
+    Source: https://www.youtube.com/watch?v=kjzmaJPoaNc
 
-    Credit:
-    Source:
+    Credit: Website - Oracle - Class FileWriter
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileWriter.html
+
+    Credit: Website - Oracle - Class BufferedReader
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/BufferedReader.html
+
+    Credit: Website - Oracle - Class FileReader
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileReader.html
+
+    Credit: Website - Oracle - Interface AutoCloseable (Try-With-Resources)
+    Source: https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+    
+    Credit: Website - Oracle - Lambda Expressions
+    Source: https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html
+
+    Credit: YouTube - Amigoscode - Java Lambda Expressions
+    Source: https://www.youtube.com/watch?v=ePJrt5-G8eM
+
+    Credit: YouTube - Coding with John - Lambda Expressions in Java
+    Source: https://www.youtube.com/watch?v=tj5sLSFjVj4
+
+    Credit: Website - Oracle - Collection.removeIf()
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html#removeIf(java.util.function.Predicate)
+
+    Credit: Website - Oracle - System.lineSeparator()
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/System.html#lineSeparator()
+
+    Credit: Website - Oracle - ThreadLocalRandom
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/ThreadLocalRandom.html
+
+    Credit: Website - Baeldung - Gson List Serialization and Deserialization
+    Source: https://www.baeldung.com/gson-list
+
+    Credit: YouTube - Amigoscode - Gson Tutorial Java
+    Source: https://www.youtube.com/watch?v=5sQvQdUxy4w
+
+    Credit: YouTube - Java Guides - Gson JSON Serialization and Deserialization
+    Source: https://www.youtube.com/watch?v=HSuLn7z7Dtw
+
+    Credit: YouTube - ProgrammingKnowledge - Read JSON File using Gson in Java
+    Source: https://www.youtube.com/watch?v=7sZx8j2j7vM
+
+    Credit: Website - GeeksforGeeks - StringBuilder in Java
+    Source: https://www.geeksforgeeks.org/stringbuilder-class-in-java-with-examples/
+
+    Credit: YouTube - ProgrammingKnowledge - Java StringBuilder Tutorial
+    Source: https://www.youtube.com/watch?v=7QzYwYvR8kg
+
+    Credit: YouTube - Coding with John - Java StringBuilder
+    Source: https://www.youtube.com/watch?v=9X7pHf3yY6g
+
+    Credit: Website - GeeksforGeeks - ArrayList in Java
+    Source: https://www.geeksforgeeks.org/arraylist-in-java/
+    
+    Credit: YouTube - Bro Code - ArrayLists in Java
+    Source: https://www.youtube.com/watch?v=E3jH5PjAFZg
+
+    Credit: YouTube - Bro Code - Java ArrayList Tutorial
+    Source: https://www.youtube.com/watch?v=xk4_1vDrzzo
+
+    Credit: YouTube - Alex Lee - Java ArrayList Tutorial
+    Source: https://www.youtube.com/watch?v=rzA7UJ-hQn4
+
+    Credit: YouTube - Coding with John - Java ArrayLists Explained
+    Source: https://www.youtube.com/watch?v=NwJgqXj-bxE
+
+    Credit: Website - GeeksforGeeks - File Handling in Java
+    Source: https://www.geeksforgeeks.org/file-handling-in-java/
+
+    Credit: Website - GeeksforGeeks - Lambda Expressions in Java
+    Source: https://www.geeksforgeeks.org/lambda-expressions-java-8/
+
+    Credit: Website - JUnit 5 User Guide
+    Source: https://junit.org/junit5/docs/current/user-guide/
+
+    Credit: Website - Baeldung - JUnit 5 Testing
+    Source: https://www.baeldung.com/junit-5
+
+    Credit: Website - GeeksforGeeks - Searching in ArrayList
+    Source: https://www.geeksforgeeks.org/search-an-element-in-an-arraylist-java/
+
+    Credit: Website - Oracle - Enhanced For Loop
+    Source: https://docs.oracle.com/javase/8/docs/technotes/guides/language/foreach.html
+
+    Credit: Website - Oracle - Object Class (toString Method)
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()
+
+    Credit: Website - Oracle - Override Annotation
+    Source: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html
+
+    Credit: YouTube - Amigoscode - JUnit 5 Tutorial
+    Source: https://www.youtube.com/watch?v=Geq60OVyBPg
+
+    Credit: YouTube - Coding with John - JUnit Testing in Java
+    Source: https://www.youtube.com/watch?v=vZm0lHciFsQ
+
+    Credit: YouTube - Java Brains - JUnit Tutorial for Beginners
+    Source: https://www.youtube.com/watch?v=0N4fJmVYvYI
+
+    Credit: YouTube - Bro Code - Java For Each Loop
+    Source: https://www.youtube.com/watch?v=cwWBy6JtKBY
+
+    Credit: YouTube - Alex Lee - Override toString Method in Java
+    Source: https://www.youtube.com/watch?v=9JvWhduhSU8
 
 */
